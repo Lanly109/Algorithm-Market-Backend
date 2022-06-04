@@ -14,6 +14,6 @@ type Tag struct {
 // GetTags 用itemID获取标签
 func GetTags(ID interface{}) ([]Tag, error) {
 	var tags []Tag
-	result := DB.Select("TagName").Where("ItemId = ?", ID).Find(&tags, ID)
+	result := DB.Select("TagName").Where("item_id = ?", ID).Find(&tags)
 	return tags, result.Error
 }
