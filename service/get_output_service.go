@@ -16,5 +16,5 @@ func (service *GetOutputService) GetData() serializer.Response {
 
     input, _ := model.GetInput(service.IID)
 	
-	return serializer.BuildOutputResponse(input.Output)
+	return serializer.BuildOutputResponse(input)
 }
