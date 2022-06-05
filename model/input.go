@@ -21,7 +21,7 @@ type Input struct {
 // GetInputs 用itemID获取输入
 func GetInputs(ID interface{}) ([]Input, error) {
 	var inputs []Input
-	result := DB.Select("Input").Where("item_id = ?", ID).Find(&inputs)
+	result := DB.Where("item_id = ?", ID).Find(&inputs)
 	return inputs, result.Error
 }
 
