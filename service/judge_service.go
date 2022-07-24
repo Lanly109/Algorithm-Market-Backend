@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -73,5 +74,5 @@ func (service *JudgeService) Judge() serializer.Response {
         fmt.Println(err.Error())
     }
 
-	return serializer.BuildOutputResponse(answer, img)
+	return serializer.BuildOutputResponse(answer, base64.StdEncoding.EncodeToString([]byte(img)))
 }
