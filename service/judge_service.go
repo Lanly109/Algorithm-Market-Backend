@@ -52,7 +52,7 @@ func (service *JudgeService) Judge() serializer.Response {
 
     judger.ExecShell(fmt.Sprintf("g++ -o %s '%s'", binFile, codeFile))
     
-	r, err := judger.Run(item.Time, item.Time, item.Memory, item.Memory, -1, -1, 0, 0, 0, []string{}, []string{}, binFile, inputFile, outputFile, errorFile, judgeFile, "c_cpp")
+	r, err := judger.Run(item.Time, item.Time, item.Memory, item.Memory, -1, -1, 0, 0, 0, []string{}, []string{}, binFile, inputFile, outputFile, errorFile, judgeFile, "c_cpp_file_io")
 	if err != nil {
 		return serializer.JudgeErr("", err)
 	}
