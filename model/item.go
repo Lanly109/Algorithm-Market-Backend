@@ -13,6 +13,9 @@ type Item struct {
 	Introduce string
 	Algorithm string
 	Code      string
+	Time      int // 单位ms
+	Memory    int // 单位kb
+	OutputImg bool
 }
 
 // GetItem 用ID获取商品

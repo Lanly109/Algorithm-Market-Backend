@@ -13,6 +13,9 @@ type Item struct {
 	Introduce string   `json:"introduce,omitempty"`
 	Algorithm string   `json:"algorithm,omitempty"`
 	Code      string   `json:"code,omitempty"`
+	Time      int     `json:"time,omitempty"`
+	Memory    int     `json:"memory,omitempty"`
+	OutputImg bool     `json:"output_img,omitempty"`
 }
 
 // BuildItem 序列化商品
@@ -80,6 +83,9 @@ func BuildItemListResponse(item []model.Item, tags [][]model.Tag) Response {
 func BuildItemFull(item model.Item, tags []model.Tag, inputs []model.Input) Item {
 	result := BuildItem(item, tags, inputs)
 	result.Code = item.Code
+	result.Time = item.Time
+	result.Memory = item.Memory
+	result.OutputImg = item.OutputImg
 	return result
 }
 

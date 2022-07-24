@@ -1,24 +1,22 @@
 package serializer
 
-import "singo/model"
-
 // output 输出序列化器
 type Output struct {
-	InputId uint   `json:"input_id"`
-	Type    string `json:"type"`
-	Output  string `json:"output"`
+	Text string `json:"text"`
+	Img  string `json:"img"`
 }
 
 // BuildOutput 序列化输出
-func BuildOutput(input model.Input) Output {
+func BuildOutput(text string, img string) Output {
 	return Output{
-		InputId: input.ID,
+		Text: text,
+		Img:  img,
 	}
 }
 
 // BuildOutputResponse 序列化输出响应
-func BuildOutputResponse(input model.Input) Response {
+func BuildOutputResponse(text string, img string) Response {
 	return Response{
-		Data: BuildOutput(input),
+		Data: BuildOutput(text, img),
 	}
 }

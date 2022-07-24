@@ -44,19 +44,32 @@ func (service *JudgeService) Judge() serializer.Response {
     outputFile := path.Join(dirName, "output.txt")
     errorFile := path.Join(dirName, "error.txt")
     judgeFile := path.Join(dirName, "judge.log")
+    svgFile := path.Join(dirName, "img.svg")
+    imgFile := path.Join(dirName, "img.png")
 
     util.WriteFile(codeFile, item.Code)
     util.WriteFile(inputFile, service.Input)
 
     judger.ExecShell(fmt.Sprintf("g++ -o %s '%s'", binFile, codeFile))
     
-	r, err := judger.Run(1000, 2000, 128*1024*1024, 32*1024*1024, 10000, 200, 0, 0, 0, []string{}, []string{}, binFile, inputFile, outputFile, errorFile, judgeFile, "c_cpp")
+	r, err := judger.Run(item.Time, item.Time, item.Memory, item.Memory, -1, -1, 0, 0, 0, []string{}, []string{}, binFile, inputFile, outputFile, errorFile, judgeFile, "c_cpp")
 	if err != nil {
-		fmt.Println(err)
 		return serializer.JudgeErr("", err)
 	}
 	b, _ := json.Marshal(r)
 	fmt.Println(string(b))
 
-	return serializer.OK()
+    answer, err := util.ReadFile(outputFile)
+    if err != nil{
+		return serializer.JudgeErr("", err)
+    }
+    
+    judger.ExecShell(fmt.Sprintf("cairosvg %s -o %s", svgFile, imgFile))
+
+    img, err := util.ReadFile(imgFile)
+    if err != nil{
+        fmt.Println(err.Error())
+    }
+
+	return serializer.BuildOutputResponse(answer, img)
 }
