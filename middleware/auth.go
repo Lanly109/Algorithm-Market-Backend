@@ -37,3 +37,26 @@ func AuthRequired() gin.HandlerFunc {
 		c.Abort()
 	}
 }
+
+// AdminRequired 需要管理员
+func AdminRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if IsAdmin(c) {
+			c.Next()
+			return
+		}
+		c.JSON(200, serializer.PermissionDeny())
+		c.Abort()
+	}
+}
+
+func IsAdmin(c *gin.Context) bool {
+	if user, _ := c.Get("user"); user != nil {
+		if real, ok := user.(*model.User); ok {
+			if real.IsAdmin() {
+				return true
+			}
+		}
+	}
+	return false
+}

@@ -9,15 +9,22 @@ type Item struct {
 	Brief     string   `json:"brief"`
 	Picture   string   `json:"picture"`
 	Tag       []string `json:"tag"`
+	Input     []string `json:"input,omitempty"`
 	Introduce string   `json:"introduce,omitempty"`
 	Algorithm string   `json:"algorithm,omitempty"`
+	Code      string   `json:"code,omitempty"`
 }
 
 // BuildItem 序列化商品
-func BuildItem(item model.Item, tags []model.Tag) Item {
+func BuildItem(item model.Item, tags []model.Tag, inputs []model.Input) Item {
 	var tag []string = []string{}
+	var input []string = []string{}
 	for _, i := range tags {
 		tag = append(tag, i.TagName)
+	}
+
+	for _, i := range inputs {
+		input = append(tag, i.Input)
 	}
 	return Item{
 		ID:        item.ID,
@@ -27,13 +34,14 @@ func BuildItem(item model.Item, tags []model.Tag) Item {
 		Tag:       tag,
 		Introduce: item.Introduce,
 		Algorithm: item.Algorithm,
+		Input:     input,
 	}
 }
 
 // BuildItemResponse 序列化商品响应
-func BuildItemResponse(item model.Item, tags []model.Tag) Response {
+func BuildItemResponse(item model.Item, tags []model.Tag, inputs []model.Input) Response {
 	return Response{
-		Data: BuildItem(item, tags),
+		Data: BuildItem(item, tags, inputs),
 	}
 }
 
@@ -65,5 +73,19 @@ func BuildItemList(items []model.Item, tags [][]model.Tag) []Item {
 func BuildItemListResponse(item []model.Item, tags [][]model.Tag) Response {
 	return Response{
 		Data: BuildItemList(item, tags),
+	}
+}
+
+// BuildItemFull 序列化商品完整信息
+func BuildItemFull(item model.Item, tags []model.Tag, inputs []model.Input) Item {
+	result := BuildItem(item, tags, inputs)
+	result.Code = item.Code
+	return result
+}
+
+// BuildItemFullResponse 序列化商品完整信息响应
+func BuildItemFullResponse(item model.Item, tags []model.Tag, inputs []model.Input) Response {
+	return Response{
+		Data: BuildItemFull(item, tags, inputs),
 	}
 }

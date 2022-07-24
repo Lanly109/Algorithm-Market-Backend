@@ -4,23 +4,24 @@ import "singo/model"
 
 // User 用户序列化器
 type User struct {
-	ID        uint   `json:"id"`
-	UserName  string `json:"user_name"`
-	Nickname  string `json:"nickname"`
-	Status    string `json:"status"`
-	Avatar    string `json:"avatar"`
-	CreatedAt int64  `json:"created_at"`
+	ID       uint   `json:"id"`
+	UserName string `json:"username"`
+	Password string `json:"password,omitempty"`
+	Email    string `json:"email"`
+	Role     string `json:"role"`
+	Coin     int    `json:"coin"`
+	Avatar   string `json:"avatar"`
 }
 
 // BuildUser 序列化用户
 func BuildUser(user model.User) User {
 	return User{
-		ID:        user.ID,
-		UserName:  user.UserName,
-		Nickname:  user.Nickname,
-		Status:    user.Status,
-		Avatar:    user.Avatar,
-		CreatedAt: user.CreatedAt.Unix(),
+		ID:       user.ID,
+		UserName: user.UserName,
+		Email:    user.Email,
+		Role:     user.Role,
+		Coin:     user.Coin,
+		Avatar:   user.Avatar,
 	}
 }
 

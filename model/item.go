@@ -7,11 +7,12 @@ import (
 // item 商品模型
 type Item struct {
 	gorm.Model
-	Name           string
-	Brief          string
-	Picture        string
-	Introduce      string
-	Algorithm      string
+	Name      string
+	Brief     string
+	Picture   string
+	Introduce string
+	Algorithm string
+	Code      string
 }
 
 // GetItem 用ID获取商品

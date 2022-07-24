@@ -5,13 +5,13 @@ import (
 	"singo/serializer"
 )
 
-// GetItemDeatilService 获得商品详细信息服务
-type GetItemDetailService struct {
+// GetItemFullDeatilService 获得商品完整信息服务
+type GetItemFullDetailService struct {
 	ID uint `uri:"id"`
 }
 
 // GetData 获取数据
-func (service *GetItemDetailService) GetData() serializer.Response {
+func (service *GetItemFullDetailService) GetData() serializer.Response {
 	print(service.ID)
 	item, err := model.GetItem(service.ID)
 
@@ -22,5 +22,5 @@ func (service *GetItemDetailService) GetData() serializer.Response {
 	tags, err := model.GetTags(service.ID)
 	inputs, err := model.GetInputs(service.ID)
 
-	return serializer.BuildItemResponse(item, tags, inputs)
+	return serializer.BuildItemFullResponse(item, tags, inputs)
 }

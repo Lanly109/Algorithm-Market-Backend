@@ -10,20 +10,20 @@ type User struct {
 	gorm.Model
 	UserName       string
 	PasswordDigest string
-	Nickname       string
+	Email          string
 	Status         string
+	Role           string
+	Coin           int
 	Avatar         string `gorm:"size:1000"`
 }
 
 const (
 	// PassWordCost 密码加密难度
 	PassWordCost = 12
-	// Active 激活用户
-	Active string = "active"
-	// Inactive 未激活用户
-	Inactive string = "inactive"
-	// Suspend 被封禁用户
-	Suspend string = "suspend"
+	// Admin 管理员
+	Admin string = "admin"
+	// Guest 游客
+	Guest string = "guest"
 )
 
 // GetUser 用ID获取用户
@@ -47,4 +47,8 @@ func (user *User) SetPassword(password string) error {
 func (user *User) CheckPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordDigest), []byte(password))
 	return err == nil
+}
+
+func (user *User) IsAdmin() bool {
+	return user.Role == Admin
 }

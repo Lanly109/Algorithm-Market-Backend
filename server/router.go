@@ -23,9 +23,9 @@ func NewRouter() *gin.Engine {
 		v1.POST("ping", api.Ping)
 
 		v1.GET("items", api.GetItemList)
-        v1.GET("items/:id", api.GetItemDetail)
-        v1.GET("items/:id/inputs", api.GetInputList)
-        v1.GET("items/:id/inputs/:inputID/output", api.GetOutput)
+		v1.GET("items/:id", api.GetItemDetail)
+
+        v1.POST("judge", api.Judge)
 
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)
@@ -38,9 +38,20 @@ func NewRouter() *gin.Engine {
 		auth.Use(middleware.AuthRequired())
 		{
 			// User Routing
-			auth.GET("user/me", api.UserMe)
+			auth.GET("user/info", api.UserMe)
 			auth.DELETE("user/logout", api.UserLogout)
+
+			// 需要管理员权限的
+			admin := auth.Group("")
+			admin.Use(middleware.AdminRequired())
+			{
+				// User Routing
+				admin.POST("items", api.CreateItem)
+				admin.PUT("items/:id", api.UpdateItem)
+				admin.DELETE("items/:id", api.DeleteItem)
+			}
 		}
+
 	}
 	return r
 }

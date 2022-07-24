@@ -7,6 +7,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/jiang4869/go-judger v0.0.1 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/onsi/gomega v1.12.0 // indirect
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a

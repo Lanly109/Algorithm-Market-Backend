@@ -4,9 +4,9 @@ import "github.com/gin-gonic/gin"
 
 // Response 基础序列化器
 type Response struct {
-	Code  int         `json:"code"`
+    Code  int         `json:"code" default:"200"`
 	Data  interface{} `json:"data,omitempty"`
-	Msg   string      `json:"message"`
+    Msg   string      `json:"message" default:"ok"`
 	Error string      `json:"error,omitempty"`
 }
 
@@ -25,10 +25,14 @@ const (
 	CodeCheckLogin = 401
 	// CodeNoRightErr 未授权访问
 	CodeNoRightErr = 403
+	// CodeServiceErr 服务器发生错误
+	CodeServiceErr = 502
 	// CodeDBError 数据库操作失败
 	CodeDBError = 50001
 	// CodeEncryptError 加密失败
 	CodeEncryptError = 50002
+	// CodeEncryptError 加密失败
+	CodeJudgeError = 50003
 	//CodeParamErr 各种奇奇怪怪的参数错误
 	CodeParamErr = 40001
 )
@@ -38,6 +42,14 @@ func CheckLogin() Response {
 	return Response{
 		Code: CodeCheckLogin,
 		Msg:  "未登录",
+	}
+}
+
+// PermissionDeny 权限不足
+func PermissionDeny() Response {
+	return Response{
+		Code: CodeNoRightErr,
+		Msg:  "无权操作",
 	}
 }
 
@@ -68,4 +80,28 @@ func ParamErr(msg string, err error) Response {
 		msg = "参数错误"
 	}
 	return Err(CodeParamErr, msg, err)
+}
+
+// ServiceErr 服务错误
+func ServiceErr(msg string, err error) Response {
+	if msg == "" {
+		msg = "服务错误"
+	}
+	return Err(CodeServiceErr, msg, err)
+}
+
+// JudgeErr 评测错误
+func JudgeErr(msg string, err error) Response {
+	if msg == "" {
+		msg = "评测错误"
+	}
+	return Err(CodeJudgeError, msg, err)
+}
+
+// OK 无误
+func OK() Response {
+	return Response{
+		Code: 0,
+		Msg:  "ok",
+	}
 }
