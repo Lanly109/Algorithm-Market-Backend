@@ -13,8 +13,8 @@ type Item struct {
 	Introduce string   `json:"introduce,omitempty"`
 	Algorithm string   `json:"algorithm,omitempty"`
 	Code      string   `json:"code,omitempty"`
-	Time      int     `json:"time,omitempty"`
-	Memory    int     `json:"memory,omitempty"`
+	Time      int      `json:"time,omitempty"`
+	Memory    int      `json:"memory,omitempty"`
 	OutputImg bool     `json:"output_img,omitempty"`
 }
 

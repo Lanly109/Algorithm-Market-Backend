@@ -16,12 +16,15 @@ type CreateItemService struct {
 	Introduce string   `json:"introduce"`
 	Algorithm string   `json:"algorithm"`
 	Code      string   `json:"code"`
+	Time      int      `json:"time,omitempty"`
+	Memory    int      `json:"memory,omitempty"`
+	OutputImg bool     `json:"output_img,omitempty"`
 }
 
 // CreateData 创建数据
 func (service *CreateItemService) CreateData() serializer.Response {
 
-    fmt.Println(service)
+	fmt.Println(service)
 	item := model.Item{
 		Name:      service.Name,
 		Brief:     service.Brief,
