@@ -40,6 +40,9 @@ func (service *UpdateItemService) UpdateData() serializer.Response {
     item.Introduce = service.Introduce
     item.Algorithm = service.Algorithm
     item.Code = service.Code
+    item.Time = service.Time
+    item.Memory = service.Memory
+    item.OutputImg = service.OutputImg
     model.DB.Save(&item)
 
 	return serializer.OK()

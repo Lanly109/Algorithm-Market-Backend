@@ -16,9 +16,9 @@ type CreateItemService struct {
 	Introduce string   `json:"introduce"`
 	Algorithm string   `json:"algorithm"`
 	Code      string   `json:"code"`
-	Time      int      `json:"time,omitempty"`
-	Memory    int      `json:"memory,omitempty"`
-	OutputImg bool     `json:"output_img,omitempty"`
+	Time      int      `json:"time"`
+	Memory    int      `json:"memory"`
+	OutputImg bool     `json:"output_img"`
 }
 
 // CreateData 创建数据
@@ -32,6 +32,9 @@ func (service *CreateItemService) CreateData() serializer.Response {
 		Introduce: service.Introduce,
 		Algorithm: service.Algorithm,
 		Code:      service.Code,
+		Time:      service.Time,
+		Memory:    service.Memory,
+		OutputImg: service.OutputImg,
 	}
 
 	if err := model.DB.Create(&item).Error; err != nil {
