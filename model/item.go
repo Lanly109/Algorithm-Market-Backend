@@ -14,7 +14,7 @@ type Item struct {
 	Algorithm string
 	Code      string
 	Time      int // 单位ms
-	Memory    int // 单位kb
+	Memory    int // 单位b
 	OutputImg bool
 }
 
