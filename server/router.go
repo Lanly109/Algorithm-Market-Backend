@@ -25,7 +25,7 @@ func NewRouter() *gin.Engine {
 		v1.GET("items", api.GetItemList)
 		v1.GET("items/:id", api.GetItemDetail)
 
-        v1.POST("judge", api.Judge)
+		v1.POST("judge", api.Judge)
 
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)

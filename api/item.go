@@ -9,23 +9,23 @@ import (
 
 // GetItemDetail 获取商品详细信息接口
 func GetItemDetail(c *gin.Context) {
-    if middleware.IsAdmin(c) {
-        var service service.GetItemFullDetailService
-        if err := c.ShouldBindUri(&service); err == nil {
-            res := service.GetData()
-            c.JSON(200, res)
-        } else {
-            c.JSON(200, ErrorResponse(err))
-        }
-    }else{
-        var service service.GetItemDetailService
-        if err := c.ShouldBindUri(&service); err == nil {
-            res := service.GetData()
-            c.JSON(200, res)
-        } else {
-            c.JSON(200, ErrorResponse(err))
-        }
-    }
+	if middleware.IsAdmin(c) {
+		var service service.GetItemFullDetailService
+		if err := c.ShouldBindUri(&service); err == nil {
+			res := service.GetData()
+			c.JSON(200, res)
+		} else {
+			c.JSON(200, ErrorResponse(err))
+		}
+	} else {
+		var service service.GetItemDetailService
+		if err := c.ShouldBindUri(&service); err == nil {
+			res := service.GetData()
+			c.JSON(200, res)
+		} else {
+			c.JSON(200, ErrorResponse(err))
+		}
+	}
 }
 
 // GetItemFullDetail 获取商品完整信息接口
@@ -77,7 +77,7 @@ func UpdateItem(c *gin.Context) {
 	var service service.UpdateItemService
 	if err := c.ShouldBindUri(&service); err != nil {
 		c.JSON(200, ErrorResponse(err))
-    }
+	}
 	if err := c.ShouldBind(&service); err == nil {
 		res := service.UpdateData()
 		c.JSON(200, res)

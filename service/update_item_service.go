@@ -9,7 +9,7 @@ import (
 // UpdateItemService 更新商品服务
 type UpdateItemService struct {
 	ID uint `uri:"id"`
-	CreateItemService 
+	CreateItemService
 }
 
 // UpdateData 更新数据
@@ -31,19 +31,19 @@ func (service *UpdateItemService) UpdateData() serializer.Response {
 		return serializer.ParamErr("创建输入数据失败", err)
 	}
 
-    fmt.Println(service)
-    var item model.Item
-    model.DB.Find(&item, service.ID)
-    item.Name = service.Name
-    item.Brief = service.Brief
-    item.Picture = service.Picture
-    item.Introduce = service.Introduce
-    item.Algorithm = service.Algorithm
-    item.Code = service.Code
-    item.Time = service.Time
-    item.Memory = service.Memory
-    item.OutputImg = service.OutputImg
-    model.DB.Save(&item)
+	fmt.Println(service)
+	var item model.Item
+	model.DB.Find(&item, service.ID)
+	item.Name = service.Name
+	item.Brief = service.Brief
+	item.Picture = service.Picture
+	item.Introduce = service.Introduce
+	item.Algorithm = service.Algorithm
+	item.Code = service.Code
+	item.Time = service.Time
+	item.Memory = service.Memory
+	item.OutputImg = service.OutputImg
+	model.DB.Save(&item)
 
 	return serializer.OK()
 }
