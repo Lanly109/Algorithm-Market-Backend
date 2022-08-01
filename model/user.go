@@ -14,7 +14,7 @@ type User struct {
 	Status         string
 	Role           string
 	Coin           int
-	Avatar         string `gorm:"size:1000"`
+	Avatar         string 
 }
 
 const (
