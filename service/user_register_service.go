@@ -16,11 +16,11 @@ type UserRegisterService struct {
 // valid 验证表单
 func (service *UserRegisterService) valid() *serializer.Response {
 	count := int64(0)
-	model.DB.Model(&model.User{}).Where("user_name = ?", service.UserName).Count(&count)
+	model.DB.Model(&model.User{}).Where("email = ?", service.Email).Count(&count)
 	if count > 0 {
 		return &serializer.Response{
 			Code: 40001,
-			Msg:  "用户名已经注册",
+			Msg:  "邮箱已经注册",
 		}
 	}
 
