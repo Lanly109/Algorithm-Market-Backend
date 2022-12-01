@@ -27,7 +27,7 @@ func BuildItem(item model.Item, tags []model.Tag, inputs []model.Input) Item {
 	}
 
 	for _, i := range inputs {
-		input = append(tag, i.Input)
+		input = append(input, i.Input)
 	}
 	return Item{
 		ID:        item.ID,
