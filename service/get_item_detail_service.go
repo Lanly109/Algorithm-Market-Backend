@@ -12,7 +12,6 @@ type GetItemDetailService struct {
 
 // GetData 获取数据
 func (service *GetItemDetailService) GetData() serializer.Response {
-	print(service.ID)
 	item, err := model.GetItem(service.ID)
 
 	if err != nil {

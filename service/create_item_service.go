@@ -1,9 +1,10 @@
 package service
 
 import (
-	"fmt"
 	"singo/model"
 	"singo/serializer"
+
+	"gorm.io/gorm"
 )
 
 // CreateItemService 创建商品服务
@@ -22,9 +23,8 @@ type CreateItemService struct {
 }
 
 // CreateData 创建数据
-func (service *CreateItemService) CreateData() serializer.Response {
+func (service *CreateItemService) CreateData(user *model.User) serializer.Response {
 
-	fmt.Println(service)
 	item := model.Item{
 		Name:      service.Name,
 		Brief:     service.Brief,
@@ -35,18 +35,28 @@ func (service *CreateItemService) CreateData() serializer.Response {
 		Time:      service.Time,
 		Memory:    service.Memory,
 		OutputImg: service.OutputImg,
+		Status:    model.Pending,
+		AuthorId:  user.ID,
 	}
 
-	if err := model.DB.Create(&item).Error; err != nil {
-		return serializer.ParamErr("创建商品失败", err)
-	}
+	err := model.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&item).Error; err != nil {
+			return err
+		}
 
-	if err := model.CreateTags(item.ID, service.Tag); err != nil {
-		return serializer.ParamErr("创建标签失败", err)
-	}
+		if err := model.CreateTags(item.ID, service.Tag); err != nil {
+			return err
+		}
 
-	if err := model.CreateInputs(item.ID, service.Input); err != nil {
-		return serializer.ParamErr("创建输入数据失败", err)
+		if err := model.CreateInputs(item.ID, service.Input); err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return serializer.ServiceErr("创建商品失败", err)
 	}
 
 	return serializer.OK()

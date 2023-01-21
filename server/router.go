@@ -22,34 +22,58 @@ func NewRouter() *gin.Engine {
 	{
 		v1.POST("ping", api.Ping)
 
+        // 文章列表
 		v1.GET("items", api.GetItemList)
-		v1.GET("items/:id", api.GetItemDetail)
 
+        // 审核通过文章
+		accept := v1.Group("")
+        accept.Use(middleware.AcceptItemRequired())
+        {
+            // 获取商品详细信息
+            accept.GET("items/:id", api.GetItemDetail)
+        }
+
+        // 评测
 		v1.POST("judge", api.Judge)
 
-		// 用户登录
+		// 用户注册
 		v1.POST("user/register", api.UserRegister)
 
 		// 用户登录
 		v1.POST("user/login", api.UserLogin)
 
+		// 图片上传
+		v1.POST("img", api.UploadImage)
+
 		// 需要登录保护的
 		auth := v1.Group("")
 		auth.Use(middleware.AuthRequired())
 		{
-			// User Routing
+			// 用户信息
 			auth.GET("user/info", api.UserMe)
+			// 用户登出
 			auth.DELETE("user/logout", api.UserLogout)
 
-			// 需要管理员权限的
-			admin := auth.Group("")
-			admin.Use(middleware.AdminRequired())
+            // 创建商品
+            auth.POST("items", api.CreateItem)
+
+            auth.GET("myitems", api.GetMyItemList)
+
+			// 需要所有者或管理员权限的
+			owner := auth.Group("")
+			owner.Use(middleware.OwnerRequired())
 			{
-				// User Routing
-				admin.POST("items", api.CreateItem)
-				admin.PUT("items/:id", api.UpdateItem)
-				admin.DELETE("items/:id", api.DeleteItem)
+				owner.PUT("items/:id", api.UpdateItem)
+				owner.DELETE("items/:id", api.DeleteItem)
 			}
+
+            admin := auth.Group("")
+            admin.Use(middleware.AdminRequired())
+            {
+                admin.GET("items/:id/accept", api.AcceptItem)
+                admin.GET("items/:id/reject", api.RejectItem)
+                admin.GET("reviewitems", api.GetPendingItemList)
+            }
 		}
 
 	}

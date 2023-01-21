@@ -2,6 +2,7 @@ package api
 
 import (
 	"singo/middleware"
+	"singo/model"
 	"singo/service"
 
 	"github.com/gin-gonic/gin"
@@ -50,11 +51,37 @@ func GetItemList(c *gin.Context) {
 	}
 }
 
+// GetMyItemList 获取自己商品列表接口
+func GetMyItemList(c *gin.Context) {
+	var service service.GetMyItemListService
+	if err := c.ShouldBindUri(&service); err == nil {
+		user, _ := c.Get("user")
+		real, _ := user.(*model.User)
+		res := service.GetData(real)
+		c.JSON(200, res)
+	} else {
+		c.JSON(200, ErrorResponse(err))
+	}
+}
+
+// GetPendingItemList 获取待审核商品列表接口
+func GetPendingItemList(c *gin.Context) {
+	var service service.GetPendingItemListService
+	if err := c.ShouldBindUri(&service); err == nil {
+		res := service.GetData()
+		c.JSON(200, res)
+	} else {
+		c.JSON(200, ErrorResponse(err))
+	}
+}
+
 // CreateItem 创建商品接口
 func CreateItem(c *gin.Context) {
 	var service service.CreateItemService
 	if err := c.ShouldBind(&service); err == nil {
-		res := service.CreateData()
+		user, _ := c.Get("user")
+		real, _ := user.(*model.User)
+		res := service.CreateData(real)
 		c.JSON(200, res)
 	} else {
 		c.JSON(200, ErrorResponse(err))
@@ -84,4 +111,28 @@ func UpdateItem(c *gin.Context) {
 	} else {
 		c.JSON(200, ErrorResponse(err))
 	}
+}
+
+// AcceptItem 审核通过商品
+func AcceptItem(c *gin.Context) {
+	var service service.AcceptItemService
+	if err := c.ShouldBindUri(&service); err != nil {
+		c.JSON(200, ErrorResponse(err))
+	}
+	user, _ := c.Get("user")
+	real, _ := user.(*model.User)
+	res := service.UpdateData(real)
+	c.JSON(200, res)
+}
+
+// RejectItem 审核拒绝商品
+func RejectItem(c *gin.Context) {
+	var service service.RejectItemService
+	if err := c.ShouldBindUri(&service); err != nil {
+		c.JSON(200, ErrorResponse(err))
+	}
+	user, _ := c.Get("user")
+	real, _ := user.(*model.User)
+	res := service.UpdateData(real)
+	c.JSON(200, res)
 }

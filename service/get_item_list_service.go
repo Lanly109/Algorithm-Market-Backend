@@ -13,7 +13,7 @@ type GetItemListService struct {
 func (service *GetItemListService) GetData() serializer.Response {
 	var items []model.Item
 
-	model.DB.Find(&items)
+	model.DB.Where("status = ?", model.Accept).Find(&items)
 
 	var tags [][]model.Tag
 
@@ -22,5 +22,5 @@ func (service *GetItemListService) GetData() serializer.Response {
 		tags = append(tags, tag)
 	}
 
-	return serializer.BuildItemListResponse(items, tags)
+	return serializer.BuildItemListResponse(items, tags, false)
 }
