@@ -54,10 +54,10 @@ func AdminRequired() gin.HandlerFunc {
 func AcceptItemRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
-		if IsAdmin(c) {
+		if IsOwner(c) || IsAdmin(c) {
 			c.Next()
 			return
-		} else if item, err := model.GetItem(id); err != nil && item.Status == model.Accept {
+		} else if item, err := model.GetItem(id); err == nil && item.Status == model.Accept {
 			c.Next()
 			return
 		}
@@ -92,7 +92,7 @@ func IsAdmin(c *gin.Context) bool {
 func IsOwner(c *gin.Context) bool {
 	if user, _ := c.Get("user"); user != nil {
 		id := c.Param("id")
-		if item, err := model.GetItem(id); err != nil {
+		if item, err := model.GetItem(id); err == nil {
 			if real, ok := user.(*model.User); ok {
 				if real.ID == uint(item.AuthorId) {
 					return true
